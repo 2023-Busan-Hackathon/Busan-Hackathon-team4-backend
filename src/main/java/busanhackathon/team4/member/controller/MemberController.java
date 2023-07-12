@@ -2,13 +2,8 @@ package busanhackathon.team4.member.controller;
 
 import busanhackathon.team4.common.Result;
 import busanhackathon.team4.member.service.MemberService;
-import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +26,7 @@ public class MemberController {
 
 
     @Getter @Setter
-    @AllArgsConstructor
+    @NoArgsConstructor
     public static class JoinFormDto {
         private String loginId;
         private String password;

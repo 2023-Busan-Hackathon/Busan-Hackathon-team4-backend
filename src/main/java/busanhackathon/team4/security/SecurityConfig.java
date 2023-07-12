@@ -1,19 +1,35 @@
 package busanhackathon.team4.security;
 
-import lombok.RequiredArgsConstructor;
+import busanhackathon.team4.member.service.MemberService;
+import busanhackathon.team4.security.handler.LoginFailureHandler;
+import busanhackathon.team4.security.handler.LoginSuccessHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@RequiredArgsConstructor
 public class SecurityConfig {
-    private final CustomAuthFailureHandler customAuthFailureHandler;
+    private final MemberService memberService;
+    private final LoginSuccessHandler loginSuccessHandler;
+    private final LoginFailureHandler loginFailureHandler;
+    private final ObjectMapper objectMapper;
+
+    public SecurityConfig(@Lazy MemberService memberService, LoginSuccessHandler loginSuccessHandler, LoginFailureHandler loginFailureHandler, ObjectMapper objectMapper) {
+        this.memberService = memberService;
+        this.loginSuccessHandler = loginSuccessHandler;
+        this.loginFailureHandler = loginFailureHandler;
+        this.objectMapper = objectMapper;
+    }
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // 권한에 따라 허용하는 url 설정
@@ -21,30 +37,24 @@ public class SecurityConfig {
         http.authorizeRequests().antMatchers("/login", "/join").permitAll()
                 .antMatchers("**").permitAll();
 
-        http.formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/정해야됨")
-                .loginProcessingUrl("/login")
-                .usernameParameter("loginId")
-                .passwordParameter("password")
-                .failureHandler(customAuthFailureHandler) //로그인 실패 핸들러
-                .permitAll();
+        http
+                .httpBasic().disable()
+                .csrf().disable()
+                .formLogin().disable();
 
-        http.logout()
-                .logoutUrl("/member/logout")
-                .logoutSuccessUrl("/login") //로그아웃 후 로그인으로 이동
-                .invalidateHttpSession(true)
-                .permitAll();
-
-        http.csrf().disable();
+        http.addFilterBefore(jsonUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
     @Bean
-    AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+
+        provider.setPasswordEncoder(passwordEncoder());
+        provider.setUserDetailsService(memberService);
+
+        return new ProviderManager(provider);
     }
 
 
@@ -52,4 +62,11 @@ public class SecurityConfig {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+    @Bean
+    public JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter() {
+        JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter = new JsonUsernamePasswordAuthenticationFilter(objectMapper, loginSuccessHandler, loginFailureHandler);
+        jsonUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManager());
+        return jsonUsernamePasswordAuthenticationFilter;
+    }
 }
+

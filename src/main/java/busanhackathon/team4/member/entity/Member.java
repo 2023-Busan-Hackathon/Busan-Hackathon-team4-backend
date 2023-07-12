@@ -22,5 +22,6 @@ public class Member {
     private String loginId;
     private String password;
     private String nickname;
-    private String role = "MEMBER";
+    @Builder.Default
+    private String role = "USER";
 }
