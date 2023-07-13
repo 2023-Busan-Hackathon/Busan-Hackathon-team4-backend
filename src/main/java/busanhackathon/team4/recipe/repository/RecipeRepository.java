@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     @Query("select r from Recipe r where r.member.id = :username")
-    List<Recipe> findAllRecipeByMember(@Param("memberId") Long username);
+    List<Recipe> findAllRecipeByMember(@Param("username") Long username);
 }
