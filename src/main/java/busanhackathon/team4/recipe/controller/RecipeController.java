@@ -46,15 +46,6 @@ public class RecipeController {
         return ResponseEntity.ok(new Result(recipeId, "레시피 저장 완료"));
     }
 
-    /**
-     * recipeId 와 isPublic 값을 받아 update
-     */
-    @ApiOperation(value = "저장한 레시피 읽기 권한 변경", notes = "요청 파라미터:<br>recipeId<br>isPublic")
-    @PostMapping("/recipe-change-public")
-    public ResponseEntity<Result> changeRecipePublic(@AuthenticationPrincipal User user,
-                                                     @RequestBody RecipeDto recipeDto) {
-        recipeService.changePublic(user.getUsername(), recipeDto);
-        return ResponseEntity.ok(new Result(null, "레시피 읽기 권한 " + recipeDto.getIsPublic() + "으로 변경" ));
-    }
+
 
 }

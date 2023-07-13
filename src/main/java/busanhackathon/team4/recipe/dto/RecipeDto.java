@@ -4,6 +4,8 @@ package busanhackathon.team4.recipe.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -18,4 +20,6 @@ public class RecipeDto {
     private String method;
     @Schema(title = "공개 여부", example = "true")
     private Boolean isPublic;
+
+    private LocalDateTime createdAt;
 }

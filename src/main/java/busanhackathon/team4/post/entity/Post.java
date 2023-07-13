@@ -1,5 +1,6 @@
 package busanhackathon.team4.post.entity;
 
+import busanhackathon.team4.common.BaseEntity;
 import busanhackathon.team4.member.entity.Member;
 import busanhackathon.team4.recipe.entity.Recipe;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Post {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -30,4 +31,8 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recipe_id")
+    private Recipe recipe;
 }

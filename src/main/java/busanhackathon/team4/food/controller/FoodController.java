@@ -23,7 +23,7 @@ public class FoodController {
 
     @ApiOperation(value = "못 먹는 음식 조회", notes = "요청 파라미터 없음")
     @GetMapping("/food")
-    public ResponseEntity<Result> getFood(@AuthenticationPrincipal User user) {
+    public ResponseEntity<Result> getFoodList(@AuthenticationPrincipal User user) {
         List<FoodDto> foodDtoList = foodService.findAllFoodByMember(user.getUsername());
         return ResponseEntity.ok(new Result(foodDtoList, "제외할 음식 조회 완료"));
     }

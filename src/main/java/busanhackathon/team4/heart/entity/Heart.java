@@ -1,5 +1,6 @@
 package busanhackathon.team4.heart.entity;
 
+import busanhackathon.team4.common.BaseEntity;
 import busanhackathon.team4.member.entity.Member;
 import busanhackathon.team4.post.entity.Post;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Heart {
+public class Heart extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "heart_id")
