@@ -40,4 +40,3 @@ public class MemberController {
         private String password;
     }
 }
-
