@@ -2,6 +2,7 @@ package busanhackathon.team4.member.controller;
 
 import busanhackathon.team4.common.Result;
 import busanhackathon.team4.member.service.MemberService;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ public class MemberController {
     /**
      * 회원가입
      */
+    @ApiOperation(value = "못 먹는 음식 추가", notes = "요청 파라미터:<br>loginId<br>password<br>nickname")
     @PostMapping("/join")
     public ResponseEntity<Result> joinUser(@RequestBody JoinFormDto joinFormDto) {
         log.info("회원가입");
