@@ -14,7 +14,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "post")
 public class Post {
 
     @Id
@@ -23,7 +22,7 @@ public class Post {
     private Long id;
 
     private String title;
-    @Column(length = 50000)
+    @Column(columnDefinition = "text")
     private String content;
     @Builder.Default
     private Integer viewCount = 0;

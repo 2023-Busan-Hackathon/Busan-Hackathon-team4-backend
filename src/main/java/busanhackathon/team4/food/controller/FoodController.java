@@ -9,10 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,7 +27,7 @@ public class FoodController {
     }
 
     @PostMapping("/food")
-    public ResponseEntity<Result> banFood(@AuthenticationPrincipal User user, FoodDto foodDto) {
+    public ResponseEntity<Result> banFood(@AuthenticationPrincipal User user, @RequestBody FoodDto foodDto) {
         Long foodId = foodService.enrollFood(user.getUsername(), foodDto);
         return ResponseEntity.ok(new Result(foodId, "제외할 음식 저장 완료"));
     }

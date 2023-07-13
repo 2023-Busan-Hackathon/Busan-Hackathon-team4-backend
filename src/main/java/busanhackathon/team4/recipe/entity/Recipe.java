@@ -11,7 +11,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "recipe")
 public class Recipe {
     @Id
     @GeneratedValue
@@ -19,7 +18,7 @@ public class Recipe {
     private Long id;
 
     private String foodName;
-    @Column(length = 50000)
+    @Column(columnDefinition = "text")
     private String method;
     private Boolean isPublic;
 

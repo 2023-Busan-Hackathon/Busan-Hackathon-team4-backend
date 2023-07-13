@@ -51,7 +51,6 @@ public class MemberService implements UserDetailsService {
         log.info("로그인 중");
         Member member = memberRepository.findByLoginId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("loginId에 해당하는 회원이 없습니다."));
-        log.info("password"+ member.getPassword());
         //@AuthentcationPrincipal User user
         return User.builder()
                 .username(member.getLoginId())

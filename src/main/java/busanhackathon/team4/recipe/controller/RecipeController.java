@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -30,7 +31,8 @@ public class RecipeController {
     }
 
     @PostMapping("/recipe")
-    public ResponseEntity<Result> saveRecipe(@AuthenticationPrincipal User user, RecipeDto recipeDto) {
+    public ResponseEntity<Result> saveRecipe(@AuthenticationPrincipal User user,
+                                             @RequestBody RecipeDto recipeDto) {
         Long recipeId = recipeService.saveRecipe(user.getUsername(), recipeDto);
         return ResponseEntity.ok(new Result(recipeId, "레시피 저장 완료"));
     }
@@ -40,7 +42,7 @@ public class RecipeController {
      */
     @PostMapping("/recipe-change-public")
     public ResponseEntity<Result> changeRecipePublic(@AuthenticationPrincipal User user,
-                                                     RecipeDto recipeDto) {
+                                                     @RequestBody RecipeDto recipeDto) {
         recipeService.changePublic(user.getUsername(), recipeDto);
         return ResponseEntity.ok(new Result(null, "레시피 권한 " + recipeDto.getIsPublic() + "으로 변경" ));
     }
