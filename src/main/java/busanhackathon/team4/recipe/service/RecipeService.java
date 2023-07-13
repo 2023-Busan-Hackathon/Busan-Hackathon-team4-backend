@@ -79,4 +79,18 @@ public class RecipeService {
         // 요청온 값으로 update
         recipe.setIsPublic(recipeDto.getIsPublic());
     }
+
+    /**
+     * 레시피 상세 보기
+     */
+    public RecipeDto findOneById(Long recipeId) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new EntityNotFoundException("없는 레시피입니다."));
+        RecipeDto recipeDto = RecipeDto.builder()
+                .foodName(recipe.getFoodName())
+                .method(recipe.getMethod())
+                .isPublic(recipe.getIsPublic())
+                .build();
+        return recipeDto;
+    }
 }

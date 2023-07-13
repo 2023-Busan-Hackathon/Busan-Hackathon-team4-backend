@@ -20,7 +20,7 @@ public class MemberController {
     /**
      * 회원가입
      */
-    @ApiOperation(value = "못 먹는 음식 추가", notes = "요청 파라미터:<br>loginId<br>password<br>nickname")
+    @ApiOperation(value = "회원가입", notes = "요청 파라미터:<br>loginId<br>password<br>nickname")
     @PostMapping("/join")
     public ResponseEntity<Result> joinUser(@RequestBody JoinFormDto joinFormDto) {
         log.info("회원가입");

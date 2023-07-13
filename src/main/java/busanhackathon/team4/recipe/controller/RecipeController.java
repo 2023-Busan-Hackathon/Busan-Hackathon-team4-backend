@@ -24,12 +24,18 @@ import java.util.List;
 public class RecipeController {
     private final RecipeService recipeService;
 
-    @ApiOperation(value = "저장한 레시피 조회", notes = "요청 파라미터 없음")
+    @ApiOperation(value = "저장한 레시피 전체 조회", notes = "요청 파라미터 없음")
     @GetMapping("/recipe")
     public ResponseEntity<Result> getRecipeList(@AuthenticationPrincipal User user) {
         List<RecipeDto> recipeDtoList = recipeService.findAllRecipeByMember(user.getUsername());
         return ResponseEntity.ok(new Result(recipeDtoList, "저장한 레시피 조회 완료"));
-
+    }
+    
+    @ApiOperation(value = "저장한 레시피 상세 조회", notes = "요청 파라미터 없음")
+    @GetMapping("/recipe/{recipeId}")
+    public ResponseEntity<Result> getRecipeDetail(@PathVariable("recipeId") Long recipeId) {
+        RecipeDto recipeDto = recipeService.findOneById(recipeId);
+        return ResponseEntity.ok(new Result(recipeDto, "저장한 레시피 상세 조회"));
     }
 
     @ApiOperation(value = "api 에서 받아온 레시피 저장", notes = "요청 파라미터:<br>foodName<br>method")
