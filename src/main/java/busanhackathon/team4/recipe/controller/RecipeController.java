@@ -42,6 +42,7 @@ public class RecipeController {
     public ResponseEntity<Result> changeRecipePublic(@AuthenticationPrincipal User user,
                                                      RecipeDto recipeDto) {
         recipeService.changePublic(user.getUsername(), recipeDto);
+        return ResponseEntity.ok(new Result(null, "레시피 권한 " + recipeDto.getIsPublic() + "으로 변경" ));
     }
 
 }
