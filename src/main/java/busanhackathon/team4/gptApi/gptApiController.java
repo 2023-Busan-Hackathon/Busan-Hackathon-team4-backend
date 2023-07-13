@@ -20,7 +20,7 @@ public class gptApiController {
                                        @RequestParam(required = false) Integer display) {
         log.info("ai 컨트롤러 진입");
         try {
-            return ResponseEntity.ok().body(openAIService.getCompletion("저녁 메뉴 추천해줘"));
+            return ResponseEntity.ok().body(openAIService.getCompletion(query));
         } catch (HttpClientErrorException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

@@ -41,11 +41,12 @@ public class gptApiService {
 
         // 완료시 생성할 최대 토큰수
         requestBody.put("max_tokens", 1500);
-
+        log.info("requestBody: " + requestBody);
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
 
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+            log.info("responseBody: " + response.getBody());
             return response.getBody();
         } catch (RestClientException e) {
             throw new OpenAIException("OpenAI API 호출 중 오류가 발생하였습니다.", e);
