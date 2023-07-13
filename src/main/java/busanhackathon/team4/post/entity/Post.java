@@ -1,5 +1,6 @@
 package busanhackathon.team4.post.entity;
 
+import busanhackathon.team4.member.entity.Member;
 import busanhackathon.team4.recipe.entity.Recipe;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,7 @@ public class Post {
     @Builder.Default
     private Integer viewCount = 0;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recipe_id")
-    private Recipe recipe;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 }
