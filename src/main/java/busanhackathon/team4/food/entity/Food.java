@@ -1,6 +1,7 @@
 package busanhackathon.team4.food.entity;
 
 import busanhackathon.team4.member.entity.Member;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
