@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface HeartRepository extends JpaRepository<Heart, Long> {
 
-    @Query("select h from Heart h join fetch h.post p where h.member.id = :username")
+    @Query("select h from Heart h join fetch h.post p where h.member.loginId = :username")
     List<Heart> findByMemberId(@Param("username") String username);
 
 }
