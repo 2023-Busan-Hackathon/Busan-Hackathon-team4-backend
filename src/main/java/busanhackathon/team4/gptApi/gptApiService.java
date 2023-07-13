@@ -23,7 +23,7 @@ public class gptApiService {
     private static final String API_ENDPOINT = "https://api.openai.com/v1/";
 
 //    @Value("${OPEN_AI_KEY}")
-    private String OPEN_AI_KEY = "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";
+    private String OPEN_AI_KEY = "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";
     private final RestTemplate restTemplate = restTemplate();
 
     public String getCompletion(String prompt) {
