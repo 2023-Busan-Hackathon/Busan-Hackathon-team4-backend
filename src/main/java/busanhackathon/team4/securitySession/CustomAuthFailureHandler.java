@@ -1,4 +1,4 @@
-package busanhackathon.team4.security;
+package busanhackathon.team4.securitySession;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;

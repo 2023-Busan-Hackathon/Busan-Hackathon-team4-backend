@@ -1,4 +1,4 @@
-package busanhackathon.team4.security.handler;
+package busanhackathon.team4.securitySession.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;

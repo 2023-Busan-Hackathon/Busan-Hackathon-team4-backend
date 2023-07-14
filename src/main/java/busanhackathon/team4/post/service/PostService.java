@@ -6,6 +6,7 @@ import busanhackathon.team4.heart.repository.HeartRepository;
 import busanhackathon.team4.member.entity.Member;
 import busanhackathon.team4.member.repository.MemberRepository;
 import busanhackathon.team4.post.dto.PostDto;
+import busanhackathon.team4.post.dto.PostFormDto;
 import busanhackathon.team4.post.entity.Post;
 import busanhackathon.team4.post.repository.PostRepository;
 import busanhackathon.team4.recipe.entity.Recipe;
@@ -35,9 +36,9 @@ public class PostService {
     private final RecipeService recipeService;
     private final RecipeRepository recipeRepository;
 
-    public Long enrollPost(String username, PostDto postDto) {
+    public Long enrollPost(String username, PostFormDto postFormDto) {
         // 해당 레시피로 등록한 게시글이 있는지 체크
-        Optional<Post> existPost = postRepository.findByRecipeId(postDto.getRecipeId());
+        Optional<Post> existPost = postRepository.findByRecipeId(postFormDto.getRecipeId());
         if (existPost.isPresent()) {
             throw new CustomException("현재 등록하고자 하는 레시피로 이미 등록된 게시글이 있습니다.");
         }
@@ -45,12 +46,12 @@ public class PostService {
         Member member = memberRepository.findByLoginId(username)
                 .orElseThrow(() -> new EntityNotFoundException("회원이 없습니다."));
 
-        Recipe recipe = recipeRepository.findById(postDto.getRecipeId())
+        Recipe recipe = recipeRepository.findById(postFormDto.getRecipeId())
                 .orElseThrow(() -> new EntityNotFoundException("없는 레시피입니다."));
 
         Post post = Post.builder()
-                .title(postDto.getTitle())
-                .content(postDto.getContent())
+                .title(postFormDto.getTitle())
+                .content(postFormDto.getContent())
                 .member(member)
                 .recipe(recipe)
                 .build();
@@ -63,6 +64,7 @@ public class PostService {
         return post.getId();
     }
 
+    @Transactional(readOnly = true)
     public List<PostDto> findAllPost(String username) {
         // 회원이 누른 heart 조회
         List<Heart> heartList = heartRepository.findByMemberId(username);
@@ -92,6 +94,7 @@ public class PostService {
         return postDtoList;
     }
 
+    @Transactional(readOnly = true)
     public List<PostDto> findHeartPost(String username) {
         // 회원이 누른 heart 조회
         List<Long> postIdList = heartRepository.findByMemberId(username).stream()
@@ -110,5 +113,35 @@ public class PostService {
                         .build())
                 .collect(Collectors.toList());
         return postDtoList;
+    }
+
+    public PostDto findOnePost(String username, Long postId) {
+        List<Heart> memberHeartList = heartRepository.findByMemberId(username);
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("없는 게시글입니다."));
+
+        log.info("조회수 1 증가");
+        post.increaseViewCount();
+
+        // 회원이 찜한 게시글인지 체크
+        Boolean isHeart = false;
+        for(Heart heart : memberHeartList) {
+            if (heart.getPost().getId() == post.getId()) {
+                isHeart = true;
+                break;
+            }
+        }
+
+        PostDto postDto = PostDto.builder()
+                .postId(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .viewCount(post.getViewCount())
+                .createdBy(post.getMember().getNickname())
+                .isHeart(isHeart)
+                .createdAt(post.getCreatedAt())
+                .build();
+        return postDto;
     }
 }

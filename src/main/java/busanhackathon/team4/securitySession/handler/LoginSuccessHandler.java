@@ -1,4 +1,4 @@
-package busanhackathon.team4.security.handler;
+package busanhackathon.team4.securitySession.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -16,6 +16,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("LoginSuccessHandler.onAuthenticationSuccess");
-        response.sendRedirect("/");
+        // 클라이언트에게 응답을 보내는 코드
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().print("Login successful");
+        response.getWriter().flush();
     }
 }

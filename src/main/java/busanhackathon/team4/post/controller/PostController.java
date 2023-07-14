@@ -2,6 +2,7 @@ package busanhackathon.team4.post.controller;
 
 import busanhackathon.team4.common.Result;
 import busanhackathon.team4.post.dto.PostDto;
+import busanhackathon.team4.post.dto.PostFormDto;
 import busanhackathon.team4.post.service.PostService;
 import busanhackathon.team4.recipe.dto.RecipeDto;
 import busanhackathon.team4.recipe.service.RecipeService;
@@ -33,10 +34,18 @@ public class PostController {
         return ResponseEntity.ok(new Result(postDtoList, "게시글 리스트 조회 완료"));
     }
 
+    @ApiOperation(value = "게시글 상세 조회", notes = "요청 파라미터 없음")
+    @GetMapping("/post/{postId}")
+    public ResponseEntity<Result> getPostDetail(@AuthenticationPrincipal User user,
+                                                @PathVariable("postId") Long postId) {
+        PostDto postDto = postService.findOnePost(user.getUsername(), postId);
+        return ResponseEntity.ok(new Result(postDto, "게시글 상세 조회 완료"));
+    }
+
     @ApiOperation(value = "게시글 작성", notes = "요청 파라미터:<br>title<br>content<br>")
     @PostMapping("/post")
-    public ResponseEntity<Result> enrollPost(@AuthenticationPrincipal User user, @RequestBody PostDto postDto) {
-        Long postId = postService.enrollPost(user.getUsername(), postDto);
+    public ResponseEntity<Result> enrollPost(@AuthenticationPrincipal User user, @RequestBody PostFormDto postFormDto) {
+        Long postId = postService.enrollPost(user.getUsername(), postFormDto);
         return ResponseEntity.ok(new Result(postId, "게시글 등록 완료"));
     }
 

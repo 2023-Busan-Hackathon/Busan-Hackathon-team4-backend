@@ -1,4 +1,4 @@
-package busanhackathon.team4.security;
+package busanhackathon.team4.securitySession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
