@@ -44,7 +44,17 @@ public class RecipeService {
         return recipe.getId();
     }
 
-    public void removeRecipe(Long recipeId) {
+    /**
+     * 레시피 삭제
+     * 관련된 게시글이 있을 경우 게시글과 좋아요 함께 삭제
+     */
+    public void removeRecipe(String username, Long recipeId) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new EntityNotFoundException("없는 레시피입니다."));
+
+        if (!recipe.getMember().getLoginId().equals(username)) {
+            throw new CustomException("본인이 저장한 레시피만 삭제할 수 있습니다.");
+        }
         recipeRepository.deleteById(recipeId);
         log.info("레시피 삭제 완료");
     }
