@@ -27,6 +27,6 @@ public class Recipe extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne(mappedBy = "recipe")
+    @OneToOne(mappedBy = "recipe", cascade = CascadeType.REMOVE)
     private Post post;
 }
