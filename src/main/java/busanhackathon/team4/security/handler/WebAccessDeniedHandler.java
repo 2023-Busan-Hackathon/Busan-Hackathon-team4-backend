@@ -1,4 +1,4 @@
-package busanhackathon.team4.security;
+package busanhackathon.team4.security.handler;
 
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;

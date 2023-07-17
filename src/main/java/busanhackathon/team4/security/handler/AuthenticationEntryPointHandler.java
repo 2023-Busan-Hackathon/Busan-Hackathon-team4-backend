@@ -1,4 +1,4 @@
-package busanhackathon.team4.security;
+package busanhackathon.team4.security.handler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

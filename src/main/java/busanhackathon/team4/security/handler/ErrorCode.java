@@ -1,4 +1,4 @@
-package busanhackathon.team4.security;
+package busanhackathon.team4.security.handler;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
