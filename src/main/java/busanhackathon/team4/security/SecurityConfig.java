@@ -18,6 +18,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationEntryPointHandler authenticationEntryPointHandler;
+    private final WebAccessDeniedHandler webAccessDeniedHandler;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -26,8 +29,12 @@ public class SecurityConfig {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPointHandler)
+                .accessDeniedHandler(webAccessDeniedHandler)
+                .and()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/login", "/join").permitAll()
 //                .antMatchers("/members/test").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()

@@ -19,6 +19,14 @@ public class ExceptionController {
         return ResponseEntity.badRequest().body(new Result(e.getMessage(), "예외처리"));
     }
 
+    //중복 회원 가입
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Result> handlerIllegalStateException(Exception e) {
+        return ResponseEntity.badRequest().body(new Result(e.getMessage(), "예외처리"));
+    }
+
+
+
     //커스텀 예외 처리
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<Result> handlerCustomException(Exception e) {

@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletRequest;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
@@ -81,18 +82,18 @@ public class JwtTokenProvider {
     }
 
     // 토큰 정보를 검증하는 메서드
-    public boolean validateToken(String token) {
+    public boolean validateToken(ServletRequest request, String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            Jwts.parser().setSigningKey(key).parseClaimsJws(token);
             return true;
-        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT Token", e);
+        } catch (MalformedJwtException e) {
+            request.setAttribute("exception", "MalformedJwtException");
         } catch (ExpiredJwtException e) {
-            log.info("Expired JWT Token", e);
+            request.setAttribute("exception", "ExpiredJwtException");
         } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT Token", e);
+            request.setAttribute("exception", "UnsupportedJwtException");
         } catch (IllegalArgumentException e) {
-            log.info("JWT claims string is empty.", e);
+            request.setAttribute("exception", "IllegalArgumentException");
         }
         return false;
     }
