@@ -37,9 +37,11 @@ public class MemberController {
     /**
      * 로그인
      */
-    @ApiOperation(value = "회원가입", notes = "요청 파라미터:<br>loginId<br>password<br>nickname")
+    @ApiOperation(value = "로그인", notes = "요청 파라미터:<br>loginId<br>password")
     @PostMapping("/login")
-    public ResponseEntity<Result> joinUser(@RequestBody LoginFormDto loginFormDto) {
+    public ResponseEntity<Result> loginUser(@RequestBody LoginFormDto loginFormDto) {
+        log.info("ID: " + loginFormDto.getLoginId());
+        log.info("PASSWORD: " + loginFormDto.getPassword());
         TokenDto tokenDto = memberService.login(loginFormDto.getLoginId(), loginFormDto.getPassword());
         log.info("컨트롤러 [memberService 후");
         return ResponseEntity.ok(new Result(tokenDto, "로그인 완료. 토큰 반환"));
@@ -48,6 +50,7 @@ public class MemberController {
 
     @Getter @Setter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class JoinFormDto {
         @Schema(title = "로그인 아이디", example = "abcde2")
         private String loginId;
@@ -59,6 +62,7 @@ public class MemberController {
 
     @Getter @Setter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class LoginFormDto {
         private String loginId;
         private String password;
