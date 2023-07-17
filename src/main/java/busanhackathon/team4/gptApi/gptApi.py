@@ -49,7 +49,7 @@ def ask(q):
     return bot_text
 
 # Load your API key from an environment variable or secret management service
-openai.api_key = <API_KEY>
+openai.api_key = <api 키>
 
 query = sys.argv[1]
 

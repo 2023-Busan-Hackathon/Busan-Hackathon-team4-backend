@@ -38,11 +38,8 @@ public class FoodService {
     }
 
     public List<FoodDto> findAllFoodByMember(String username) {
-        System.out.println("===============");
-        System.out.println(username);
         Member member = memberRepository.findByLoginId(username)
                 .orElseThrow(() -> new EntityNotFoundException("없는 회원 입니다."));
-        System.out.println(member.getId());
         List<FoodDto> foodDtoList = foodRepository.findByMemberId(member.getId()).stream()
                 .map(food -> FoodDto.builder()
                         .foodId(food.getId())
