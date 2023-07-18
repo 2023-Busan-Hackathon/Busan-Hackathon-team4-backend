@@ -34,7 +34,7 @@ public class GptApiController {
     }
 
     @PostMapping("/ai/history")
-    public ResponseEntity<?> openAiGPT() {
+    public ResponseEntity<?> getHistory() {
         GptApiDto gptApiDto = service.getOneHistory();
         return ResponseEntity.ok(new Result(gptApiDto, "가장 최근 기록 반환"));
     }
