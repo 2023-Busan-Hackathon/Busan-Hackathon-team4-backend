@@ -1,7 +1,10 @@
 package busanhackathon.team4.gptApi;
 
+import busanhackathon.team4.exception.CustomException;
 import busanhackathon.team4.food.dto.FoodDto;
 import busanhackathon.team4.food.service.FoodService;
+import busanhackathon.team4.gptApi.entity.GptApi;
+import busanhackathon.team4.gptApi.repository.GptApiRepository;
 import busanhackathon.team4.member.entity.Member;
 import busanhackathon.team4.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,8 @@ import java.util.stream.Collectors;
 public class GptApiService {
 
     private final FoodService foodService;
+    private final GptApiRepository gptApiRepository;
+
     public GptApiDto callApi(String username, GptApiFormDto gptApiFormDto) {
         try {
             List<FoodDto> foodDtoList = foodService.findAllFoodByMember(username);
@@ -118,6 +123,16 @@ public class GptApiService {
             System.out.println("필요한 재료: " + ingredient);
             System.out.println("레시피: " + recipe);
 
+            GptApi gptApiEntity = GptApi.builder()
+                    .gptResponse(result)
+                    .food(food)
+                    .ingredient(ingredient)
+                    .recipe(recipe)
+                    .build();
+            //gpt 응답 데이터 저장
+            gptApiRepository.save(gptApiEntity);
+
+
             GptApiDto responseDto = GptApiDto.builder()
                     .gptResponse(result)
                     .food(food)
@@ -133,5 +148,17 @@ public class GptApiService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public GptApiDto getOneHistory() {
+        GptApi gptApi = gptApiRepository.findOneDesc()
+                .orElseThrow(() -> new CustomException("저장된 gpt 응답 데이터가 없습니다."));
+        GptApiDto gptApiDto = GptApiDto.builder()
+                .gptResponse(gptApi.getGptResponse())
+                .food(gptApi.getFood())
+                .ingredient(gptApi.getIngredient())
+                .recipe(gptApi.getRecipe())
+                .build();
+        return gptApiDto;
     }
 }

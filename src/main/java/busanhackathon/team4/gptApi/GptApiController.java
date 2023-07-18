@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
@@ -20,7 +21,7 @@ public class GptApiController {
     private final GptApiService service;
 
     @ApiOperation(value = "api 에서 받아온 레시피 저장", notes = "요청 파라미터:<br>foodName<br>method")
-    @GetMapping("/ai")
+    @PostMapping("/ai")
     public ResponseEntity<?> openAiGPT(@AuthenticationPrincipal User user,
                                        @RequestBody GptApiFormDto gptApiFormDto) {
 
@@ -30,5 +31,11 @@ public class GptApiController {
         } catch (HttpClientErrorException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @PostMapping("/ai/history")
+    public ResponseEntity<?> openAiGPT() {
+        GptApiDto gptApiDto = service.getOneHistory();
+        return ResponseEntity.ok(new Result(gptApiDto, "가장 최근 기록 반환"));
     }
 }
