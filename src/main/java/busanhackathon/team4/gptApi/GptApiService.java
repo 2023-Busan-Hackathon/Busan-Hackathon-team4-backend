@@ -119,6 +119,7 @@ public class GptApiService {
             System.out.println("레시피: " + recipe);
 
             GptApiDto responseDto = GptApiDto.builder()
+                    .gptResponse(result)
                     .food(food)
                     .ingredient(ingredient)
                     .recipe(recipe)

@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @Builder
 public class GptApiDto {
+    private String gptResponse;
     private String food;
     private String ingredient;
     private String recipe;
